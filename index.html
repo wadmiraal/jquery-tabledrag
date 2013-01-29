@@ -1,0 +1,104 @@
+<html>
+<head>
+  <title>jQuery Tablesort plugin</title>
+  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+  <link href="css/jquery.tabledrag.css" rel="stylesheet" />
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.2/jquery.cookie.min.js"></script>
+  <script src="js/jquery.tabledrag.js"></script>
+  <style>
+  body {
+    padding: 2em;
+  }
+
+  table {
+    min-width: 50%;
+  }
+  </style>
+</head>
+<body>
+  <table id="my-table" class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Order</th>
+        <th>Parent</th>
+        <th>Favorite color</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="draggable">
+        <td>Alex 
+          <input class="person-id" name="person-1-id" value="person-1" type="hidden" />
+          <input class="row-depth" name="person-1-depth" value="1" type="hidden" />
+        </td>
+        <td>34</td>
+        <td>
+          <select class="row-weight" name="person-1-weight">
+            <option selected value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </td>
+        <td>
+          <select class="row-parent" name="person-1-parent">
+            <option selected value="0">No one</option>
+            <option value="person-2">Bob</option>
+            <option value="person-3">Candice</option>
+          </select>
+        </td>
+        <td>Blue</td>
+      </tr>
+      <tr class="draggable">
+        <td>Bob 
+          <input class="person-id" name="person-2-id" value="person-2" type="hidden" />
+          <input class="row-depth" name="person-2-depth" value="2"  type="hidden" />
+        </td>
+        <td>22</td>
+        <td>
+          <select class="row-weight" name="person-2-weight">
+            <option selected value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </td>
+        <td>
+          <select class="row-parent" name="person-2-parent">
+            <option value="0">No one</option>
+            <option selected value="person-1">Alex</option>
+            <option value="person-3">Candice</option>
+          </select>
+        </td>
+        <td>Red</td>
+      </tr>
+      <tr class="draggable">
+        <td>Candice 
+          <input class="person-id" name="person-3-id" value="person-3" type="hidden" />
+          <input class="row-depth" name="person-3-depth" value="1" type="hidden" />
+        </td>
+        <td>24</td>
+        <td>
+          <select class="row-weight" name="person-3-weight">
+            <option value="1">1</option>
+            <option selected value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </td>
+        <td>
+          <select class="row-parent" name="person-3-parent">
+            <option selected value="0">No one</option>
+            <option value="person-1">Alex</option>
+            <option value="person-2">Bob</option>
+          </select>
+        </td>
+        <td>Green</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+  $('#my-table').tableDrag();
+  </script>
+</body>
+</html>
