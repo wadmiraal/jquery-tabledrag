@@ -25,7 +25,7 @@ Currently requires the [jQuery Cookie](https://github.com/carhartl/jquery-cookie
 Demo
 ====
 
-Coming soon...
+[Click here](http://wadmiraal.github.com/jquery-tabledrag/)
 
 
 Documentation
