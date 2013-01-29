@@ -1,15 +1,23 @@
+/**
+ * @file
+ * jQuery Tabledrag plugin. Drag and drop table rows with field manipulation.
+ * Most code is copied verbatim from Drupal core, misc/tabledrag.js.
+ * @license GPL V2 
+ * @author Wouter Admiraal <wad@wadmiraal.net>
+ */
 
-;(function($) {
+;(function($, undefined) {
 
 // Use the Drupal namespace to facilitate the fork.
 var Drupal = {};
 
 /**
- * Drag and drop table rows with field manipulation.
+ * Plugin definition.
  */
 $.fn.tableDrag = function(settings) {
   settings = $.extend({
     draggableClass: 'draggable',
+    cookiePath: '/',
     group: {
       fieldClass: 'row-depth',
       depthLimit: 3
@@ -176,7 +184,7 @@ Drupal.tableDrag.prototype.initColumns = function () {
   // Set a cookie if it is not already present.
   if ($.cookie('Drupal.tableDrag.showWeight') === null) {
     $.cookie('Drupal.tableDrag.showWeight', 0, {
-      path: '/',
+      path: this.tableSettings.cookiePath,
       // The cookie expires in one year.
       expires: 365
     });
@@ -210,7 +218,7 @@ Drupal.tableDrag.prototype.hideColumns = function () {
   $('.tabledrag-toggle-weight').text(Drupal.t('Show row weights/parents'));
   // Change cookie.
   $.cookie('Drupal.tableDrag.showWeight', 0, {
-    path: '/',
+    path: this.tableSettings.cookiePath,
     // The cookie expires in one year.
     expires: 365
   });
@@ -235,7 +243,7 @@ Drupal.tableDrag.prototype.showColumns = function () {
   $('.tabledrag-toggle-weight').text(Drupal.t('Hide row weights/parents'));
   // Change cookie.
   $.cookie('Drupal.tableDrag.showWeight', 1, {
-    path: '/',
+    path: this.tableSettings.cookiePath,
     // The cookie expires in one year.
     expires: 365
   });
