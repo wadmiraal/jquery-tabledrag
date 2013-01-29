@@ -25,7 +25,40 @@ Coming soon...
 Documentation
 =============
 
-Coming soon...
+Enabling a table is easy:
+
+    $('#my-table').tableDrag();
+
+Now, each `tr` in this table that has a class of `draggable` (or any other you specify) will be treated as a draggable, orderable row.
+Note the `weight` and `parent` input fields should be inside their own `td`, as the plugin can hide entire columns for better usability (more below).
+
+The following options can be passed as a hash to the `tableDrag()` function. Comments explain what they mean. These are the defaults:
+
+    {
+      draggableClass: 'draggable', // The <tr> class indicating that it's draggable.
+      // The weight option allows elements to be ordered. 
+      // Pass a "falsy" value to fieldClass to deactivate (false, null, undefined, etc).
+      weight: {
+        fieldClass: 'row-weight', // The class of the <select> list. Weights will be deduced by the <option>s in this list. <option> values should be integers.
+        hidden: true // Hides the <select>s parent <td> for better usability.
+      },
+      // The parent option allows elements to be children of one another.
+      // Pass a "falsy" value to fieldClass to deactivate.
+      // To allow the child-parent relationship to function correctly, each row must contain an input with the class defined in
+      // sourceFieldClass wich represents the current row. This can be a hidden input.
+      parent: {
+        fieldClass: 'row-parent', // The class of the field containing the "parent" id. Can be any form item.
+        sourceFieldClass: 'person-id', // The class of the field containing the current "row" id. Can be any form item.
+        hidden: false // Hides the parent <td> of the "parent" field for better usability.
+      },
+      // The group option allows elements to be dragged with their children as a whole. This is usually what you want.
+      // It's related to parent and can only function with it.
+      // Pass a "falsy" value to fieldClass to deactivate.
+      group: {
+        fieldClass: 'row-depth', // The class of the field containing the row "depth". Can be any form item.
+        depthLimit: 3 // The depth limit to which items can be nested and dragged as a group.
+      },
+    }
 
 
 License

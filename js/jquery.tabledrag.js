@@ -18,7 +18,7 @@ $.fn.tableDrag = function(settings) {
     },
     weight: {
       fieldClass: 'row-weight',
-      hidden: false
+      hidden: true
     },
     parent: {
       fieldClass: 'row-parent',
