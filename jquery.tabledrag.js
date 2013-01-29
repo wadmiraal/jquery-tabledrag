@@ -1166,10 +1166,20 @@ Drupal.tableDrag.prototype.row.prototype.onSwap = function (swappedRow) {
   return null;
 };
 
+/**
+ * Dummy implementation of Drupal.t(). 
+ * The Drupal.t() function is Drupal's localization function.
+ * @todo - use in the future to localize the plugin.
+ */
 Drupal.t = function(string) {
   return string;
 }
 
+/**
+ * Verbatim copy of Drupal.theme().
+ * Drupal.theme() is a function that allows to quickly re-use small snippets
+ * of HTML markup.
+ */
 Drupal.theme = function (func) {
   var args = Array.prototype.slice.apply(arguments, [1]);
 
