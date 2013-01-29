@@ -8,12 +8,10 @@ var Drupal = {};
  * Drag and drop table rows with field manipulation.
  */
 $.fn.tableDrag = function(settings) {
-  settings = settings || {};
   settings = $.extend({
     draggableClass: 'draggable',
     group: {
       fieldClass: 'row-depth',
-      hidden: false,
       depthLimit: 3
     },
     weight: {
@@ -23,12 +21,27 @@ $.fn.tableDrag = function(settings) {
     parent: {
       fieldClass: 'row-parent',
       sourceFieldClass: 'person-id',
-      hidden: false
+      hidden: true
     }
-  }, settings);
+  }, settings || {});
 
   this.each(function() {
-    new Drupal.tableDrag(this, settings);
+    var table = new Drupal.tableDrag(this, settings);
+
+    // Indent each row.
+    $('tr.' + settings.draggableClass, this).each(function() {
+      var row = $(this);
+
+      if (settings.group.fieldClass) {
+        var field = $('.' + settings.group.fieldClass, row);
+
+        if (field.length) {
+          for (var i = 1, len = field.val(); i < len; i++) {
+            $('td:first', row).prepend(Drupal.theme('tableDragIndentation'));
+          }
+        }
+      }
+    });
   });
 };
 
@@ -84,22 +97,20 @@ Drupal.tableDrag = function (table, tableSettings) {
   $('> tr.' + this.tableSettings.draggableClass + ', > tbody > tr.' + this.tableSettings.draggableClass, table).each(function () { self.makeDraggable(this); });
 
   // Add a link before the table for users to show or hide weight columns.
-  if (typeof $.cookie === 'function') {
-    $(table).before($('<a href="#" class="tabledrag-toggle-weight"></a>')
-      .attr('title', Drupal.t('Re-order rows by numerical weight instead of dragging.'))
-      .click(function () {
-        if ($.cookie('Drupal.tableDrag.showWeight') == 1) {
-          self.hideColumns();
-        }
-        else {
-          self.showColumns();
-        }
-        return false;
-      })
-      .wrap('<div class="tabledrag-toggle-weight-wrapper"></div>')
-      .parent()
-    );
-  }
+  $(table).before($('<a href="#" class="tabledrag-toggle-weight"></a>')
+    .attr('title', Drupal.t('Re-order rows by numerical weight/parent instead of dragging.'))
+    .click(function () {
+      if ($.cookie('Drupal.tableDrag.showWeight') == 1) {
+        self.hideColumns();
+      }
+      else {
+        self.showColumns();
+      }
+      return false;
+    })
+    .wrap('<div class="tabledrag-toggle-weight-wrapper"></div>')
+    .parent()
+  );
 
   // Initialize the specified columns (for example, weight or parent columns)
   // to show or hide according to user preference. This aids accessibility
@@ -163,29 +174,22 @@ Drupal.tableDrag.prototype.initColumns = function () {
 
   // Now hide cells and reduce colspans unless cookie indicates previous choice.
   // Set a cookie if it is not already present.
-  // @todo
-  if (typeof $.cookie === 'function') {
-    if ($.cookie('Drupal.tableDrag.showWeight') === null) {
-      $.cookie('Drupal.tableDrag.showWeight', 0, {
-        path: Drupal.settings.basePath, // @todo
-        // The cookie expires in one year.
-        expires: 365
-      });
+  if ($.cookie('Drupal.tableDrag.showWeight') === null) {
+    $.cookie('Drupal.tableDrag.showWeight', 0, {
+      path: '/',
+      // The cookie expires in one year.
+      expires: 365
+    });
+    this.hideColumns();
+  }
+  // Check cookie value and show/hide weight columns accordingly.
+  else {
+    if ($.cookie('Drupal.tableDrag.showWeight') == 1) {
+      this.showColumns();
+    }
+    else {
       this.hideColumns();
     }
-    // Check cookie value and show/hide weight columns accordingly.
-    else {
-      if ($.cookie('Drupal.tableDrag.showWeight') == 1) {
-        this.showColumns();
-      }
-      else {
-        this.hideColumns();
-      }
-    }
-  }
-  // Hide columns by default.
-  else {
-    this.hideColumns();
   }
 };
 
@@ -203,15 +207,13 @@ Drupal.tableDrag.prototype.hideColumns = function () {
     this.colSpan = this.colSpan - 1;
   });
   // Change link text.
-  $('.tabledrag-toggle-weight').text(Drupal.t('Show row weights'));
+  $('.tabledrag-toggle-weight').text(Drupal.t('Show row weights/parents'));
   // Change cookie.
-  if (typeof $.cookie === 'function') {
-    $.cookie('Drupal.tableDrag.showWeight', 0, {
-      path: Drupal.settings.basePath,
-      // The cookie expires in one year.
-      expires: 365
-    });
-  }
+  $.cookie('Drupal.tableDrag.showWeight', 0, {
+    path: '/',
+    // The cookie expires in one year.
+    expires: 365
+  });
   // Trigger an event to allow other scripts to react to this display change.
   $(this.table).trigger('columnschange', 'hide');
 };
@@ -230,10 +232,10 @@ Drupal.tableDrag.prototype.showColumns = function () {
     this.colSpan = this.colSpan + 1;
   });
   // Change link text.
-  $('.tabledrag-toggle-weight').text(Drupal.t('Hide row weights'));
+  $('.tabledrag-toggle-weight').text(Drupal.t('Hide row weights/parents'));
   // Change cookie.
   $.cookie('Drupal.tableDrag.showWeight', 1, {
-    path: Drupal.settings.basePath, // @todo base path !!
+    path: '/',
     // The cookie expires in one year.
     expires: 365
   });
@@ -537,15 +539,14 @@ Drupal.tableDrag.prototype.dropRow = function (event, self) {
 
       // If a setting exists for affecting the entire group, update all the
       // fields in the entire dragged group.
+
       if (!!self.tableSettings.group.fieldClass) {
         for (var n in self.rowObject.children) {
-          self.updateField(self.rowObject.children[n], group);
+          self.updateField(self.rowObject.children[n], "group");
         }
       }
 
-      self.rowObject.markChanged();
       if (self.changed == false) {
-        $(Drupal.theme('tableDragChangedWarning')).insertBefore(self.table).hide().fadeIn('slow');
         self.changed = true;
       }
     }
@@ -759,9 +760,8 @@ Drupal.tableDrag.prototype.updateField = function (changedRow, group) {
 
   // Check if a target element exists in this row.
   if (targetElement) {
-    var sourceClass = '.' + (rowSettings.relationship == 'parent') ? rowSettings.sourceFieldClass : rowSettings.fieldClass;
+    var sourceClass = '.' + (rowSettings.relationship == 'parent' ? rowSettings.sourceFieldClass : rowSettings.fieldClass);
     var sourceElement = $(sourceClass, sourceRow);
-    console.log(sourceElement, rowSettings.relationship)
     switch (rowSettings.action) {
       case 'depth':
         // Get the depth of the target row.
@@ -948,7 +948,7 @@ Drupal.tableDrag.prototype.row.prototype.findChildren = function (addClasses) {
     else {
       break;
     }
-    currentRow = currentRow.next('tr.' + this.tableSettings.draggableClass);
+    currentRow = currentRow.next('tr.' + this.draggableClass);
   }
   if (addClasses && rows.length) {
     $('.indentation:nth-child(' + (parentIndentation + 1) + ')', rows[rows.length - 1]).addClass('tree-child-last');
@@ -1145,17 +1145,6 @@ Drupal.tableDrag.prototype.row.prototype.removeIndentClasses = function () {
 };
 
 /**
- * Add an asterisk or other marker to the changed row.
- */
-Drupal.tableDrag.prototype.row.prototype.markChanged = function () {
-  var marker = Drupal.theme('tableDragChangedMarker');
-  var cell = $('td:first', this.element);
-  if ($('span.tabledrag-changed', cell).length == 0) {
-    cell.append(marker);
-  }
-};
-
-/**
  * Stub function. Allows a custom handler when a row is indented.
  */
 Drupal.tableDrag.prototype.row.prototype.onIndent = function () {
@@ -1187,8 +1176,5 @@ Drupal.theme.prototype.tableDragIndentation = function () {
   return '<div class="indentation">&nbsp;</div>';
 };
 
-Drupal.theme.prototype.tableDragChangedWarning = function () {
-  return '<div class="tabledrag-changed-warning messages warning">' + Drupal.theme('tableDragChangedMarker') + ' ' + Drupal.t('Changes made in this table will not be saved until the form is submitted.') + '</div>';
-};
 
 })(jQuery);
