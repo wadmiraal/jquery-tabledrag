@@ -15,3 +15,9 @@ Documentation
 =============
 
 Coming soon...
+
+
+Licence
+=======
+
+Licensed under GPL.
