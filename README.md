@@ -2,7 +2,11 @@ jQuery (Drupal) Tablesort plugin
 ================================
 
 This is a fork of the [Drupal](http://www.drupal.org/project/drupal) Tablesort Javascrtip component. It allows you to make tables sortable by drag and drop.
+
 The plugin gracefully degrades when JS is not available by showing one or two select lists, allowing users to select a "weight" for each row (defining the *order*) as well as optionally a "parent" (defining a *hierarchy*).
+
+It is based on the Drupal 7 version.
+
 
 Use case
 --------
@@ -24,7 +28,7 @@ Documentation
 Coming soon...
 
 
-Licence
+License
 =======
 
-Licensed under GPL.
+Licensed under GPL V2.
