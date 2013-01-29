@@ -38,7 +38,9 @@ The following options can be passed as a hash to the `tableDrag()` function. Com
 ```javascript
 {
   // General options.
-  draggableClass: 'draggable', // The <tr> class indicating that it's draggable.
+
+  // The <tr> class indicating that it's draggable.
+  draggableClass: 'draggable', 
 
   // Specific options.
 
@@ -55,8 +57,9 @@ The following options can be passed as a hash to the `tableDrag()` function. Com
 
   // The parent option allows elements to be children of one another.
   // Pass a "falsy" value to fieldClass to deactivate.
-  // To allow the child-parent relationship to function correctly, each row must contain an input with the class defined in
-  // sourceFieldClass wich represents the current row. This can be a hidden input.
+  // To allow the child-parent relationship to function correctly, each row must contain an input 
+  // with the class defined in sourceFieldClass wich represents the current row. 
+  // This can be a hidden input.
   parent: {
     // The class of the field containing the "parent" id. Can be any form item.
     fieldClass: 'row-parent', 
@@ -68,7 +71,8 @@ The following options can be passed as a hash to the `tableDrag()` function. Com
     hidden: true 
   },
 
-  // The group option allows elements to be dragged with their children as a whole. This is usually what you want.
+  // The group option allows elements to be dragged with their children as a whole. 
+  // This is usually what you want.
   // It's related to parent and can only function with it.
   // Pass a "falsy" value to fieldClass to deactivate.
   group: {
@@ -79,6 +83,85 @@ The following options can be passed as a hash to the `tableDrag()` function. Com
     depthLimit: 3 
   },
 }
+```
+
+Example markup:
+```html
+<table id="my-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Order</th>
+      <th>Parent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="draggable">
+      <td>Alex 
+        <input class="person-id" name="person-1-id" value="person-1" type="hidden" />
+        <input class="row-depth" name="person-1-depth" value="1" type="hidden" />
+      </td>
+      <td>34</td>
+      <td>
+        <select class="row-weight" name="person-1-weight">
+          <option selected value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </td>
+      <td>
+        <select class="row-parent" name="person-1-parent">
+          <option selected value="0">No one</option>
+          <option value="person-2">Bob</option>
+          <option value="person-3">Candice</option>
+        </select>
+      </td>
+    </tr>
+    <tr class="draggable">
+      <td>Bob 
+        <input class="person-id" name="person-2-id" value="person-2" type="hidden" />
+        <input class="row-depth" name="person-2-depth" value="2"  type="hidden" />
+      </td>
+      <td>22</td>
+      <td>
+        <select class="row-weight" name="person-2-weight">
+          <option selected value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </td>
+      <td>
+        <select class="row-parent" name="person-2-parent">
+          <option value="0">No one</option>
+          <option selected value="person-1">Alex</option>
+          <option value="person-3">Candice</option>
+        </select>
+      </td>
+    </tr>
+    <tr class="draggable">
+      <td>Candice 
+        <input class="person-id" name="person-3-id" value="person-3" type="hidden" />
+        <input class="row-depth" name="person-3-depth" value="1" type="hidden" />
+      </td>
+      <td>24</td>
+      <td>
+        <select class="row-weight" name="person-3-weight">
+          <option value="1">1</option>
+          <option selected value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </td>
+      <td>
+        <select class="row-parent" name="person-3-parent">
+          <option selected value="0">No one</option>
+          <option value="person-1">Alex</option>
+          <option value="person-2">Bob</option>
+        </select>
+      </td>
+    </tr>
+  </tbody>
+</table>
 ```
 
 
