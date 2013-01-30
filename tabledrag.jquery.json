@@ -1,6 +1,6 @@
 {
   "name": "tabledrag",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "title": "jQuery (Drupal) Tabledrag",
   "author": {
     "name": "Wouter Admiraal",
@@ -17,7 +17,7 @@
     "jquery": ">=1.4",
     "cookie": "1.3.x"
   },
-  "description": "Fork of the Drupal CMS tabledrag component.",
+  "description": "A plugin to add intuitive drag-and-drop interfaces to any HTML form. Easily rearrange items, sort them, order them in a tree, etc. Works with classic HTML forms, no AJAX required. Gracefully degrades when JS is not present. Fork of the Drupal CMS tabledrag component.",
   "keywords": ["ui", "form", "cms", "drupal"],
   "homepage": "https://github.com/wadmiraal/jquery-tabledrag",
   "demo": "http://wadmiraal.github.com/jquery-tabledrag/"
