@@ -66,6 +66,7 @@ Drupal.tableDrag = function (table, tableSettings) {
 
   // Required object variables.
   this.table = table;
+  this.$table = $(table); // Cache the jQuery object.
   this.tableSettings = tableSettings;
   this.dragObject = null; // Used to hold information about a current drag operation.
   this.rowObject = null; // Provides operations for row manipulation.
@@ -105,7 +106,7 @@ Drupal.tableDrag = function (table, tableSettings) {
   $('> tr.' + this.tableSettings.draggableClass + ', > tbody > tr.' + this.tableSettings.draggableClass, table).each(function () { self.makeDraggable(this); });
 
   // Add a link before the table for users to show or hide weight columns.
-  $(table).before($('<a href="#" class="tabledrag-toggle-weight"></a>')
+  this.$table.before($('<a href="#" class="tabledrag-toggle-weight"></a>')
     .attr('title', Drupal.t('Re-order rows by numerical weight/parent instead of dragging.'))
     .click(function () {
       if ($.cookie('Drupal.tableDrag.showWeight') == 1) {
@@ -875,6 +876,7 @@ Drupal.tableDrag.prototype.restripeTable = function () {
  * Stub function. Allows a custom handler when a row begins dragging.
  */
 Drupal.tableDrag.prototype.onDrag = function () {
+  this.$table.trigger('tabledrag:dragrow', this);
   return null;
 };
 
@@ -882,6 +884,7 @@ Drupal.tableDrag.prototype.onDrag = function () {
  * Stub function. Allows a custom handler when a row is dropped.
  */
 Drupal.tableDrag.prototype.onDrop = function () {
+  this.$table.trigger('tabledrag:droprow', this);
   return null;
 };
 
