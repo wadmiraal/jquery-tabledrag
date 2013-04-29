@@ -3,7 +3,7 @@
  * jQuery Tabledrag plugin. Drag and drop table rows with field manipulation.
  * Most code is copied verbatim from Drupal core, misc/tabledrag.js.
  * @license GPL V2 
- * @author Wouter Admiraal <wad@wadmiraal.net>
+ * @author Wouter Admiraal <wadmiraal@connect-i.ch>
  */
 
 ;(function($, undefined) {
