@@ -175,6 +175,15 @@ Example markup:
 ```
 
 
+Events
+======
+
+Each event passes the entire TableDrag instance as a second parameter.
+
+* `tabledrag:dragrow` is triggered when the row is starting to get dragged
+* `tabledrag:droprow` is triggered when the row is droppen.
+
+
 License
 =======
 
