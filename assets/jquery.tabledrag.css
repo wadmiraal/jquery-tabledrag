@@ -2,7 +2,7 @@
  * @file
  * Plugin styles.
  * Copied verbatim from Drupal core, system module.
- * @license GPL V2 
+ * @license GPL V2
  */
 
 body.drag {
@@ -47,4 +47,25 @@ div.tree-child-horizontal {
 }
 .tabledrag-toggle-weight-wrapper {
   text-align: right; /* LTR */
+}
+/* RTL */
+.tabledrag-rtl {
+  direction: ltr; /* Make sure table driection is ltr in order to plugin works properly in rtl mode */
+}
+.tabledrag-rtl .draggable .indentation {
+  float:right;
+}
+.tabledrag-rtl .draggable a.tabledrag-handle{
+  float:right;
+  margin: -0.4em -0.4em -0.4em 0.2em;
+  padding: 0.42em 0.6em 0.42em 0;
+}
+.tabledrag-rtl div.tree-child {
+  background: url(tree.png) no-repeat -68px center; /* RTl */
+}
+.tabledrag-rtl div.tree-child-last {
+  background: url(tree-bottom.png) no-repeat -68px center; /* RTL */
+}
+.tabledrag-rtl div.tree-child-horizontal {
+  background: url(tree.png) no-repeat -11px center;
 }

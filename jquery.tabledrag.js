@@ -2,7 +2,7 @@
  * @file
  * jQuery Tabledrag plugin. Drag and drop table rows with field manipulation.
  * Most code is copied verbatim from Drupal core, misc/tabledrag.js.
- * @license GPL V2 
+ * @license GPL V2
  * @author Wouter Admiraal <wadmiraal@connect-i.ch>
  */
 
@@ -30,12 +30,14 @@ $.fn.tableDrag = function(settings) {
       fieldClass: 'row-parent',
       sourceFieldClass: 'person-id',
       hidden: true
-    }
+    },
+    rtl: false
   }, settings || {});
 
   this.each(function() {
+    if (settings.rtl)
+      $(this).addClass('tabledrag-rtl');
     var table = new Drupal.tableDrag(this, settings);
-
     // Indent each row.
     $('tr.' + settings.draggableClass, this).each(function() {
       var row = $(this);
@@ -1170,7 +1172,7 @@ Drupal.tableDrag.prototype.row.prototype.onSwap = function (swappedRow) {
 };
 
 /**
- * Dummy implementation of Drupal.t(). 
+ * Dummy implementation of Drupal.t().
  * The Drupal.t() function is Drupal's localization function.
  * @todo - use in the future to localize the plugin.
  */
