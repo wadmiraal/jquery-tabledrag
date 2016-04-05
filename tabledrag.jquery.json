@@ -1,11 +1,11 @@
 {
   "name": "tabledrag",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "title": "jQuery (Drupal) Tabledrag",
   "author": {
     "name": "Wouter Admiraal",
-    "email": "wadmiraal@connect-i.ch",
-    "url": "http://www.connect-i.ch"
+    "email": "wad@wadmiraal.net",
+    "url": "http://wadmiraal.net"
   },
   "licenses": [
     {
