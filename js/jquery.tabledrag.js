@@ -2,8 +2,8 @@
  * @file
  * jQuery Tabledrag plugin. Drag and drop table rows with field manipulation.
  * Most code is copied verbatim from Drupal core, misc/tabledrag.js.
- * @license GPL V2 
- * @author Wouter Admiraal <wad@wadmiraal.net>
+ * @license GPL V2
+ * @author Wouter Admiraal <wadmiraal@connect-i.ch>
  */
 
 ;(function($, undefined) {
@@ -30,12 +30,15 @@ $.fn.tableDrag = function(settings) {
       fieldClass: 'row-parent',
       sourceFieldClass: 'person-id',
       hidden: true
-    }
+    },
+    rtl: false
   }, settings || {});
 
   this.each(function() {
+    if (settings.rtl) {
+      $(this).addClass('tabledrag-rtl');
+    }
     var table = new Drupal.tableDrag(this, settings);
-
     // Indent each row.
     $('tr.' + settings.draggableClass, this).each(function() {
       var row = $(this);
@@ -66,6 +69,7 @@ Drupal.tableDrag = function (table, tableSettings) {
 
   // Required object variables.
   this.table = table;
+  this.$table = $(table); // Cache the jQuery object.
   this.tableSettings = tableSettings;
   this.dragObject = null; // Used to hold information about a current drag operation.
   this.rowObject = null; // Provides operations for row manipulation.
@@ -105,7 +109,7 @@ Drupal.tableDrag = function (table, tableSettings) {
   $('> tr.' + this.tableSettings.draggableClass + ', > tbody > tr.' + this.tableSettings.draggableClass, table).each(function () { self.makeDraggable(this); });
 
   // Add a link before the table for users to show or hide weight columns.
-  $(table).before($('<a href="#" class="tabledrag-toggle-weight"></a>')
+  this.$table.before($('<a href="#" class="tabledrag-toggle-weight"></a>')
     .attr('title', Drupal.t('Re-order rows by numerical weight/parent instead of dragging.'))
     .click(function () {
       if ($.cookie('Drupal.tableDrag.showWeight') == 1) {
@@ -696,6 +700,12 @@ Drupal.tableDrag.prototype.updateFields = function (changedRow) {
 Drupal.tableDrag.prototype.updateField = function (changedRow, group) {
   var rowSettings = this.rowSettings(group, changedRow);
 
+  // If the setting is not available, it means that particular grouping was
+  // disabled. Abort.
+  if (!rowSettings) {
+    return;
+  }
+
   // Set the row as its own target.
   if (rowSettings.relationship == 'self' || rowSettings.relationship == 'group') {
     var sourceRow = changedRow;
@@ -875,6 +885,7 @@ Drupal.tableDrag.prototype.restripeTable = function () {
  * Stub function. Allows a custom handler when a row begins dragging.
  */
 Drupal.tableDrag.prototype.onDrag = function () {
+  this.$table.trigger('tabledrag:dragrow', this);
   return null;
 };
 
@@ -882,6 +893,7 @@ Drupal.tableDrag.prototype.onDrag = function () {
  * Stub function. Allows a custom handler when a row is dropped.
  */
 Drupal.tableDrag.prototype.onDrop = function () {
+  this.$table.trigger('tabledrag:droprow', this);
   return null;
 };
 
@@ -1166,10 +1178,20 @@ Drupal.tableDrag.prototype.row.prototype.onSwap = function (swappedRow) {
   return null;
 };
 
+/**
+ * Dummy implementation of Drupal.t().
+ * The Drupal.t() function is Drupal's localization function.
+ * @todo - use in the future to localize the plugin.
+ */
 Drupal.t = function(string) {
   return string;
 }
 
+/**
+ * Verbatim copy of Drupal.theme().
+ * Drupal.theme() is a function that allows to quickly re-use small snippets
+ * of HTML markup.
+ */
 Drupal.theme = function (func) {
   var args = Array.prototype.slice.apply(arguments, [1]);
 
