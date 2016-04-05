@@ -35,8 +35,9 @@ $.fn.tableDrag = function(settings) {
   }, settings || {});
 
   this.each(function() {
-    if (settings.rtl)
+    if (settings.rtl) {
       $(this).addClass('tabledrag-rtl');
+    }
     var table = new Drupal.tableDrag(this, settings);
     // Indent each row.
     $('tr.' + settings.draggableClass, this).each(function() {

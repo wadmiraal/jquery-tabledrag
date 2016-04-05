@@ -50,13 +50,14 @@ div.tree-child-horizontal {
 }
 /* RTL */
 .tabledrag-rtl {
-  direction: ltr; /* Make sure table driection is ltr in order to plugin works properly in rtl mode */
+  /* Make sure table direction is ltr in order to plugin works properly in rtl mode. */
+  direction: ltr; 
 }
 .tabledrag-rtl .draggable .indentation {
-  float:right;
+  float: right;
 }
-.tabledrag-rtl .draggable a.tabledrag-handle{
-  float:right;
+.tabledrag-rtl .draggable a.tabledrag-handle {
+  float: right;
   margin: -0.4em -0.4em -0.4em 0.2em;
   padding: 0.42em 0.6em 0.42em 0;
 }
@@ -69,3 +70,4 @@ div.tree-child-horizontal {
 .tabledrag-rtl div.tree-child-horizontal {
   background: url(tree.png) no-repeat -11px center;
 }
+
