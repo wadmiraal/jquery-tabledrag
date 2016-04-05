@@ -700,6 +700,12 @@ Drupal.tableDrag.prototype.updateFields = function (changedRow) {
 Drupal.tableDrag.prototype.updateField = function (changedRow, group) {
   var rowSettings = this.rowSettings(group, changedRow);
 
+  // If the setting is not available, it means that particular grouping was
+  // disabled. Abort.
+  if (!rowSettings) {
+    return;
+  }
+
   // Set the row as its own target.
   if (rowSettings.relationship == 'self' || rowSettings.relationship == 'group') {
     var sourceRow = changedRow;
