@@ -1,0 +1,25 @@
+{
+  "name": "jquery-tabledrag",
+  "homepage": "https://github.com/wadmiraal/jquery-tabledrag",
+  "authors": [
+    "Wouter Admiraal <wad@wadmiraal.net>"
+  ],
+  "description": "Fork of the Drupal 7 Tablesort component. Make tables sortable.",
+  "main": [
+    "jquery.tabledrag.js",
+    "assets/jquery.tabledrag.css"
+  ],
+  "moduleType": "globals",
+  "keywords": [
+    "jquery",
+    "drupal"
+  ],
+  "license": "GPL-2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
