@@ -47,7 +47,7 @@ $.fn.tableDrag = function(settings) {
         var field = $('.' + settings.group.fieldClass, row);
 
         if (field.length) {
-          for (var i = 1, len = field.val(); i < len; i++) {
+          for (var i = 0, len = field.val(); i < len; i++) {
             $('td:first', row).prepend(Drupal.theme('tableDragIndentation'));
           }
         }
